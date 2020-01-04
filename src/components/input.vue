@@ -29,7 +29,7 @@ export default {
     //失焦触发
     shijiao(){
         if(!this.kg){
-       console.log(this.msg)
+         this.$toast.fail(this.msg)
         }
     }
   }

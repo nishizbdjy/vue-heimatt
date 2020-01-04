@@ -4,6 +4,10 @@ import App from './App.vue'
 import router from '@/router'
 //初始化css
 import '@/style/reset.css'
+//引入vant框架
+import {Toast} from 'vant'
+//挂载
+Vue.use(Toast)
 Vue.config.productionTip = false
 
 new Vue({
