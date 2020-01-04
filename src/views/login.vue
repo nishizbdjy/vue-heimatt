@@ -10,9 +10,20 @@
 
       <div class="inputs">
         <!-- v-model写法 -->
-        <hminput  placeholder="用户名/手机号" v-model="obj.username" :panduan="/(^\d{5,6}$)|^1{11}$/" msg="用户名或手机号错误"></hminput>
+        <hminput
+          placeholder="用户名/手机号"
+          v-model="obj.username"
+          :panduan="/(^\d{5,6}$)|^1{11}$/"
+          msg="用户名或手机号错误"
+        ></hminput>
         <!-- 双向绑定原生写法 -->
-        <hminput  placeholder="密码" @input="value" :value="obj.password" :panduan="/^\S{3,13}$/" msg="密码错误"></hminput>
+        <hminput
+          placeholder="密码"
+          @input="value"
+          :value="obj.password"
+          :panduan="/^\S{3,13}$/"
+          msg="密码错误"
+        ></hminput>
       </div>
       <p class="tips">
         没有账号？
@@ -27,31 +38,50 @@
 //引入按钮
 import hmbutton from "@/components/button.vue";
 //引入input
-import hminput from '@/components/input.vue'
+import hminput from "@/components/input.vue";
+//引入登陆请求
+import {login} from "@/apis/user.js";
 export default {
-  data(){
-    return{
-     obj :{
-         username: '',
-         password: ''
-         }
-    }
+  data() {
+    return {
+      obj: {
+        username: "",
+        password: ""
+      }
+    };
   },
   //注册
   components: {
     hmbutton, //按钮
-    hminput//input
+    hminput //input
   },
   //按钮事件
   methods: {
-    btndian(data) {
-      console.log(data);
-      console.log(this.obj.username)
+    async btndian(data) {
+      if (
+        /(^\d{5,6}$)|^1{11}$/.test(this.obj.username) &&
+        /^\S{3,13}$/.test(this.obj.password)
+      ) {
+        //正则正确
+        let res = await login(this.obj);
+        //登陆失败
+        if(res.data.message == '用户不存在'){
+        this.$toast.fail(res.data.message)
+        }else{
+          //登陆成功
+        localStorage.setItem('token',res.data.data.token)//存储token
+        //跳转页面
+        this.$router.push({path: '/personal'})
+        }
+      } else {
+        //正则错误
+        this.$toast.fail("用户数据不正确");
+      }
     },
     //input
-    value(data){
-    //赋值
-     this.obj.password = data
+    value(data) {
+      //赋值
+      this.obj.password = data;
     }
   }
 };
