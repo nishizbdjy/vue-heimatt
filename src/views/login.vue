@@ -7,32 +7,52 @@
       <div class="logo">
         <span class="iconfont iconnew"></span>
       </div>
+
       <div class="inputs">
-        <input data-v-744880be placeholder="请输入手机号" class="input" />
-        <input data-v-744880be placeholder="密码" class="input" type="password" />
+        <!-- v-model写法 -->
+        <hminput  placeholder="用户名/手机号" v-model="obj.username" :panduan="/(^\d{5,6}$)|^1{11}$/" msg="用户名或手机号错误"></hminput>
+        <!-- 双向绑定原生写法 -->
+        <hminput  placeholder="密码" @input="value" :value="obj.password" :panduan="/^\S{3,13}$/" msg="密码错误"></hminput>
       </div>
       <p class="tips">
         没有账号？
         <a href="#/register" class>去注册</a>
       </p>
-      <hmbutton type="huang" @bdl="btndian"></hmbutton>
+      <hmbutton type="hong" @bdl="btndian">登陆</hmbutton>
     </div>
   </div>
 </template>
 
 <script>
 //引入按钮
-import hmbutton from '@/components/button.vue'
+import hmbutton from "@/components/button.vue";
+//引入input
+import hminput from '@/components/input.vue'
 export default {
+  data(){
+    return{
+     obj :{
+         username: '',
+         password: ''
+         }
+    }
+  },
   //注册
-  components:{
-    hmbutton//按钮
+  components: {
+    hmbutton, //按钮
+    hminput//input
   },
   //按钮事件
-  methods :{
-btndian(data){
-  console.log(data)
-}
+  methods: {
+    btndian(data) {
+      console.log(data);
+      console.log(this.obj.username)
+    },
+    //input
+    value(data){
+    //赋值
+     this.obj.password = data
+    }
   }
 };
 </script>

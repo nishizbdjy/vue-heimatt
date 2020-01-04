@@ -1,5 +1,5 @@
 <template>
-  <div class="btn" @click="wbdl" :class="{huang : type=='huang',pink : type=='pink'}">
+  <div class="btn" @click="wbdl" :class="{hong : type=='hong',pink : type=='pink'}">
 <slot>插槽</slot>
   </div>
 </template>
@@ -30,7 +30,7 @@ methods : {
     height: 40px;
     width: 318/360*100vw;
 }
-.huang{
+.hong{
  background-color: red;
 }
 .pink{
