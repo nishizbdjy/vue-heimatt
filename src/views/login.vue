@@ -15,13 +15,26 @@
         没有账号？
         <a href="#/register" class>去注册</a>
       </p>
-      <div data-v-4bc01e24 class="button">登录按钮</div>
+      <hmbutton type="huang" @bdl="btndian"></hmbutton>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+//引入按钮
+import hmbutton from '@/components/button.vue'
+export default {
+  //注册
+  components:{
+    hmbutton//按钮
+  },
+  //按钮事件
+  methods :{
+btndian(data){
+  console.log(data)
+}
+  }
+};
 </script>
 
 <style lang="less" scoped>
