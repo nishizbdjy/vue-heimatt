@@ -16,7 +16,6 @@ export default {
     bianl(e) {
       let value = e.target.value;
       this.$emit("input", value);
-      console.log(this.panduan)
       //判断 正则
       if (this.panduan.test(value)) {
           //绿色
