@@ -6,20 +6,39 @@ import personal from '@/views/personal.vue'//个人中心页
 Vue.use(vueRouter)
 //配置路由
 let router = new vueRouter({
-    routes:[
+    routes: [
         //登陆页
         {
-        name : 'login',
-        path : '/login',
-        component : login
+            name: 'login',
+            path: '/login',
+            component: login
         },
         //个人中心页
         {
-            name : 'personal',
-            path : '/personal',
-            component : personal
+            name: 'personal',
+            path: '/personal',
+            component: personal
         }
     ]
+})
+//导航守卫
+router.beforeEach((to, from, next) => {
+    //to :目标路由 from : 原路由 next: 下一步操作
+    //判断登陆的是个人中心页
+    if (to.path.indexOf('/personal') == 0) {
+        //判断token
+        let token = localStorage.getItem('token')
+        if (token) {
+            //执行下一步
+            next()
+        } else {
+            //跳回登录页
+            next({ name: 'login' })
+        }
+    } else {
+        //不是个人中心页 过
+        next()
+    }
 })
 
 
