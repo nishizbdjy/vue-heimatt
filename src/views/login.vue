@@ -70,6 +70,7 @@ export default {
         }else{
           //登陆成功
         localStorage.setItem('token',res.data.data.token)//存储token
+        localStorage.setItem('user',JSON.stringify(res.data.data.user))//存储用户信息
         //跳转页面
         this.$router.push({path: '/personal'})
         }
