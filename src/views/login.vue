@@ -72,7 +72,7 @@ export default {
         localStorage.setItem('token',res.data.data.token)//存储token
         localStorage.setItem('user',JSON.stringify(res.data.data.user))//存储用户信息
         //跳转页面
-        this.$router.push({path: '/personal'})
+        this.$router.push({path: `/personal/${res.data.data.user.id}`})
         }
       } else {
         //正则错误

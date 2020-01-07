@@ -16,7 +16,7 @@ let router = new vueRouter({
         //个人中心页
         {
             name: 'personal',
-            path: '/personal',
+            path: '/personal/:id',
             component: personal
         }
     ]

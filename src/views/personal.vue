@@ -24,7 +24,10 @@
 <script>
 //引入封装的列表
 import cell from '@/components/cell.vue'
+//button
 import hmbutton from '@/components/button.vue'
+//引入获取用户详情
+import {user} from '@/apis/user.js'
 export default {
 data(){
   return{
@@ -34,6 +37,13 @@ data(){
 components:{
   cell,//列表
   hmbutton//按钮
+},
+//页面一加载
+async mounted(){
+  //发送请求获取用户详情
+  let id  = this.$route.params.id
+ let res = await user(id)
+ console.log(res)
 }
 }
 </script>
