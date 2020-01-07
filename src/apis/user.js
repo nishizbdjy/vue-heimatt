@@ -17,3 +17,19 @@ export const user = (id)=>{
         // headers: {'Authorization':localStorage.getItem('token')}
     })
 }
+//上传图片
+export const upload =(data)=>{
+    return axios({
+        method : 'post',
+        url :'/upload',
+        data
+    })
+}
+//修改用户信息
+export const bianji = (id,data)=>{
+    return axios({
+        method : 'post',
+        url : `/user_update/${id}`,
+        data
+    })
+}
