@@ -1,6 +1,6 @@
 <template>
 <!-- 封装列表 -->
-  <div class="cell">
+  <div class="cell" @click="dianjil">
   <div class="left">{{title}}</div>
   <!-- <div class="center"></div> -->
   <div class="right">{{value}}<span class="iconfont iconjiantou1 ziti"></span></div>
@@ -9,8 +9,14 @@
 
 <script>
 export default {
-props:['title','value']
+props:['title','value'],
+methods:{
+    dianjil(e){
+   this.$emit('click',e)
+    }
 }
+}
+
 </script>
 
 <style lang="less" scoped>

@@ -8,7 +8,13 @@
       <!-- 文件上传组件 -->
       <van-uploader :after-read="afterRead" />
     </div>
-    <cell title="昵称" :value="user.nickname"></cell>
+    <!-- 昵称弹出框 -->
+    <van-dialog
+  v-model="show"
+  title="标题"
+  show-cancel-button
+></van-dialog>
+    <cell title="昵称" :value="user.nickname" @click="show =!show"></cell>
     <cell title="密码" :value="user.password"></cell>
     <cell title="性别" :value="user.gender==0?'女':'男'"></cell>
   </div>
@@ -24,7 +30,8 @@ import { user, upload,bianji } from "@/apis/user.js";
 export default {
   data() {
     return {
-      user: {}
+      user: {},
+      show: false//昵称
     };
   },
   components: {
