@@ -29,6 +29,9 @@ methods : {
     background-color: rgb(43, 7, 248);
     height: 40px;
     width: 318/360*100vw;
+    font-size: 15px;
+    color: #fff;
+    font-weight: 700;
 }
 .hong{
  background-color: red;
