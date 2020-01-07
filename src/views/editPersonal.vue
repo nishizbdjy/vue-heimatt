@@ -21,7 +21,11 @@
       <van-field required label="新密码" placeholder="请输入新密码" ref="xinmima" />
     </van-dialog>
     <cell title="密码" :value="user.password" @click="mima =!mima"></cell>
-    <cell title="性别" :value="user.gender==0?'女':'男'"></cell>
+    <!-- 性别 -->
+    <van-dialog v-model="xingbie" title="性别" show-cancel-button @confirm="gender">
+      <van-picker :columns="['女','男']" @change="onChange" :default-index="user.gender"/>
+    </van-dialog>
+    <cell title="性别" :value="user.gender==0?'女':'男'" @click="xingbie=!xingbie"></cell>
   </div>
 </template>
 
@@ -37,7 +41,9 @@ export default {
     return {
       user: {},
       show: false, //昵称
-      mima: false //密码
+      mima: false, //密码
+      xingbie: false, //性别
+      xb: '', //存用户选择的gender
     };
   },
   components: {
@@ -116,6 +122,25 @@ export default {
         }
       } else {
         done();
+      }
+    },
+    //选择性别
+    onChange(picker, value, index) {
+      this.$toast(`当前值：${value}, 当前索引：${index}`);
+      this.xb = index; //存储性别
+      console.log(this.xb);
+      console.log(this.user)
+    },
+    //确认选择性别
+    async gender() {
+      let id = this.user.id;
+      let res = await bianji(id, { gender: this.xb });
+      if (res.data.message === "修改成功") {
+        this.$toast.success("修改成功");
+        //改变页面值
+        this.user.gender = this.xb
+      } else {
+        this.$toast.success(res.data.message);
       }
     }
   },
