@@ -3,12 +3,12 @@
     <router-link to="/edit_profile">
       <div class="profile">
         <!-- $axios.defaults.baseURL读取axios的服务器路径 -->
-        <img src="http://img1.imgtn.bdimg.com/it/u=3757784226,1202878475&fm=26&gp=0.jpg" alt />
+        <img :src="user.head_img" alt />
         <div class="profile-center">
           <div class="name">
-            <span class="iconfont iconxingbienan"></span>我就是我
+            <span :class="['iconfont',{'iconxingbienan':user.gender==1,'iconxingbienv':user.gender==0}]"></span>{{user.nickname}}
           </div>
-          <div class="time">2019-9-24</div>
+          <div class="time">{{user.create_date}}</div>
         </div>
         <span class="iconfont iconjiantou1"></span>
       </div>
@@ -23,42 +23,51 @@
 
 <script>
 //引入封装的列表
-import cell from '@/components/cell.vue'
+import cell from "@/components/cell.vue";
 //button
-import hmbutton from '@/components/button.vue'
+import hmbutton from "@/components/button.vue";
 //引入获取用户详情
-import {user} from '@/apis/user.js'
+import { user } from "@/apis/user.js";
 export default {
-data(){
-  return{
-
+  data() {
+    return {
+      user:{}
+    };
+  },
+  components: {
+    cell, //列表
+    hmbutton //按钮
+  },
+  //页面一加载
+  async mounted() {
+    //发送请求获取用户详情
+    let id = this.$route.params.id;
+    let res = await user(id);
+    console.log(res);
+    if (res.data.message === "获取成功") {
+      //赋值
+      this.user = res.data.data
+      //拼接img地址
+      this.user.head_img = 'http://127.0.0.1:3000'+this.user.head_img
+      //时间
+      this.user.create_date = this.user.create_date.substring(0,10)
+    }
+    //获取失败情况拦截器已经判断
   }
-},
-components:{
-  cell,//列表
-  hmbutton//按钮
-},
-//页面一加载
-async mounted(){
-  //发送请求获取用户详情
-  let id  = this.$route.params.id
- let res = await user(id)
- console.log(res)
-}
-}
+};
 </script>
 
 <style lang='less' scoped>
-.btn{
+.btn {
   margin: 15px auto;
 }
-.personal{
-    width: 100vw;
-    height: 100vh;
-    background-color: #eee;
+.personal {
+  width: 100vw;
+  height: 100vh;
+  background-color: #eee;
 }
-a{
-    color: #666;
+a {
+  color: #666;
 }
 .profile {
   display: flex;
