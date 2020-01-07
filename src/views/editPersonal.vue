@@ -26,6 +26,7 @@
       <van-picker :columns="['女','男']" @change="onChange" :default-index="user.gender"/>
     </van-dialog>
     <cell title="性别" :value="user.gender==0?'女':'男'" @click="xingbie=!xingbie"></cell>
+    <hmbottom type="hong">退出</hmbottom>
   </div>
 </template>
 
@@ -34,6 +35,8 @@
 import hmheader from "@/components/header.vue";
 //列表栏
 import cell from "@/components/cell.vue";
+//button
+import hmbottom from '@/components/button.vue'
 //获取用户信息 上传文件 编辑
 import { user, upload, bianji } from "@/apis/user.js";
 export default {
@@ -48,7 +51,8 @@ export default {
   },
   components: {
     hmheader, //封装的顶部栏
-    cell //列表栏
+    cell, //列表栏
+    hmbottom//button
   },
   methods: {
     async afterRead(file) {
@@ -159,6 +163,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.btn{
+    margin: 20px auto;
+}
 .editPersonal {
   background-color: #f2f2f2;
   height: 100%;
