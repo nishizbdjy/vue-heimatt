@@ -15,13 +15,7 @@
     </van-dialog>
     <cell title="昵称" :value="user.nickname" @click="show =!show"></cell>
     <!-- 密码 -->
-    <van-dialog
-      v-model="mima"
-      title="密码"
-      show-cancel-button
-      @confirm="qrmima"
-      :before-close="xiaoshi"
-    >
+    <van-dialog v-model="mima" title="密码" show-cancel-button :before-close="xiaoshi">
       <!-- 输入框 -->
       <van-field required label="旧密码" placeholder="请输入旧密码" ref="jiumima" />
       <van-field required label="新密码" placeholder="请输入新密码" ref="xinmima" />
@@ -79,7 +73,6 @@ export default {
       //修改昵称
       let id = this.user.id;
       let res = await bianji(id, { nickname: value });
-
       if (res.data.message === "修改成功") {
         //预览
         this.user.nickname = value;
@@ -90,64 +83,40 @@ export default {
         this.$toast.fail(res.data.message);
       }
     },
-    //点击确认
-    async qrmima() {
-      let xinmima = this.$refs.xinmima.$refs.input.value; //新密码
-      let jiumima = this.$refs.jiumima.$refs.input.value; //旧密码
-      if (!/^\S{3,16}$/.test(xinmima)) {
-        //判断是否合法
-        this.$toast.fail("请输入正确的密码3-16位");
-      } else if (jiumima !== this.user.password) {
-        //旧密码是否一致
-        this.$toast.fail("原密码不一致");
-      } else {
-        //都满足修改密码
-        let id = this.user.id;
-        let res = await bianji(id, { password: xinmima });
-        if (res.data.message === "修改成功") {
-          //修改成功
-          this.$toast.success("修改成功");
-          //改变当前密码
-          this.user.password = xinmima;
-        }else{
-            this.$toast.fail(res.data.message);
-        }
-      }
-    },
     //提示消失时
-   async xiaoshi(action,done){
-     console.log(action)
-    //  done(false)
-     if(action ==='confirm'){
-      let xinmima = this.$refs.xinmima.$refs.input.value; //新密码
-      let jiumima = this.$refs.jiumima.$refs.input.value; //旧密码
-      console.log(xinmima)
-      console.log(jiumima)
-      if (!/^\S{3,16}$/.test(xinmima)) {
-        //判断是否合法
-        this.$toast.fail("请输入正确的密码3-16位");
-        done(false)
-      } else if (jiumima !== this.user.password) {
-        //旧密码是否一致
-        this.$toast.fail("原密码不一致");
-        done(false)
-      } else {
-          done()
-        //都满足修改密码
-        let id = this.user.id;
-        let res = await bianji(id, { password: xinmima });
-        if (res.data.message === "修改成功") {
-          //修改成功
-          this.$toast.success("修改成功");
-          //改变当前密码
-          this.user.password = xinmima;
-        }else{
+    async xiaoshi(action, done) {
+      if (action === "confirm") {
+        let xinmima = this.$refs.xinmima.$refs.input.value; //新密码
+        let jiumima = this.$refs.jiumima.$refs.input.value; //旧密码
+        if (!/^\S{3,16}$/.test(xinmima)) {
+          //判断是否合法
+          this.$toast.fail("请输入正确的密码3-16位");
+          done(false);
+        } else if (jiumima !== this.user.password) {
+          //旧密码是否一致
+          this.$toast.fail("原密码不一致");
+          //全选
+          this.$refs.jiumima.$refs.input.select();
+          //焦点
+          this.$refs.jiumima.$refs.input.focus();
+          done(false);
+        } else {
+          done();
+          //都满足修改密码
+          let id = this.user.id;
+          let res = await bianji(id, { password: xinmima });
+          if (res.data.message === "修改成功") {
+            //修改成功
+            this.$toast.success("修改成功");
+            //改变当前密码
+            this.user.password = xinmima;
+          } else {
             this.$toast.fail(res.data.message);
+          }
         }
+      } else {
+        done();
       }
-     }else{
-         done()
-     }
     }
   },
   //页面一开始
