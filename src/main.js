@@ -5,11 +5,12 @@ import router from '@/router'
 //初始化css
 import '@/style/reset.css'
 //引入vant框架
-import {Toast,Uploader,Dialog} from 'vant'
+import {Toast,Uploader,Dialog,Field} from 'vant'
 //挂载
 Vue.use(Toast)//轻提示
 .use(Uploader)//文件上传
-.use(Dialog);//弹出框
+.use(Dialog)//弹出框
+.use(Field)//输入框
 Vue.config.productionTip = false
 
 new Vue({
