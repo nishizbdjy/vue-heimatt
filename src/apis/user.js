@@ -14,6 +14,6 @@ export const user = (id)=>{
     return axios({
         method : 'get',
         url: `/user/${id}`,
-        headers: {'Authorization':localStorage.getItem('token')}
+        // headers: {'Authorization':localStorage.getItem('token')}
     })
 }
