@@ -14,7 +14,19 @@
       <van-field required label="昵称" placeholder="请输入昵称" ref="nicheng" :value="user.nickname" />
     </van-dialog>
     <cell title="昵称" :value="user.nickname" @click="show =!show"></cell>
-    <cell title="密码" :value="user.password"></cell>
+    <!-- 密码 -->
+    <van-dialog
+      v-model="mima"
+      title="密码"
+      show-cancel-button
+      @confirm="qrmima"
+      :before-close="xiaoshi"
+    >
+      <!-- 输入框 -->
+      <van-field required label="旧密码" placeholder="请输入旧密码" ref="jiumima" />
+      <van-field required label="新密码" placeholder="请输入新密码" ref="xinmima" />
+    </van-dialog>
+    <cell title="密码" :value="user.password" @click="mima =!mima"></cell>
     <cell title="性别" :value="user.gender==0?'女':'男'"></cell>
   </div>
 </template>
@@ -30,7 +42,8 @@ export default {
   data() {
     return {
       user: {},
-      show: false //昵称
+      show: false, //昵称
+      mima: false //密码
     };
   },
   components: {
@@ -48,34 +61,93 @@ export default {
         //预览
         this.user.head_img = "http://127.0.0.1:3000" + res1.data.data.url;
         //修改图片
-        let id = this.user.id
+        let id = this.user.id;
         let res2 = await bianji(id, { head_img: res1.data.data.url });
         if (res2.data.message === "修改成功") {
           //提示用户
           this.$toast.success("修改成功");
         } else {
           //修改失败
-          this.$toast.file(res2.data.message);
+          this.$toast.fail(res2.data.message);
         }
       }
     },
     //确认昵称
-   async qrnc(){
-       //获取input value
-       let value = this.$refs.nicheng.$refs.input.value
-       //修改昵称
-       let id = this.user.id
-       let res = await bianji(id,{nickname: value})
+    async qrnc() {
+      //获取input value
+      let value = this.$refs.nicheng.$refs.input.value;
+      //修改昵称
+      let id = this.user.id;
+      let res = await bianji(id, { nickname: value });
 
-       if(res.data.message ==='修改成功'){
+      if (res.data.message === "修改成功") {
         //预览
-        this.user.nickname = value
+        this.user.nickname = value;
         //提示
-        this.$toast.success('修改成功')
-       }else{
-           //失败
-           this.$toast.file(res.data.message)
-       }
+        this.$toast.success("修改成功");
+      } else {
+        //失败
+        this.$toast.fail(res.data.message);
+      }
+    },
+    //点击确认
+    async qrmima() {
+      let xinmima = this.$refs.xinmima.$refs.input.value; //新密码
+      let jiumima = this.$refs.jiumima.$refs.input.value; //旧密码
+      if (!/^\S{3,16}$/.test(xinmima)) {
+        //判断是否合法
+        this.$toast.fail("请输入正确的密码3-16位");
+      } else if (jiumima !== this.user.password) {
+        //旧密码是否一致
+        this.$toast.fail("原密码不一致");
+      } else {
+        //都满足修改密码
+        let id = this.user.id;
+        let res = await bianji(id, { password: xinmima });
+        if (res.data.message === "修改成功") {
+          //修改成功
+          this.$toast.success("修改成功");
+          //改变当前密码
+          this.user.password = xinmima;
+        }else{
+            this.$toast.fail(res.data.message);
+        }
+      }
+    },
+    //提示消失时
+   async xiaoshi(action,done){
+     console.log(action)
+    //  done(false)
+     if(action ==='confirm'){
+      let xinmima = this.$refs.xinmima.$refs.input.value; //新密码
+      let jiumima = this.$refs.jiumima.$refs.input.value; //旧密码
+      console.log(xinmima)
+      console.log(jiumima)
+      if (!/^\S{3,16}$/.test(xinmima)) {
+        //判断是否合法
+        this.$toast.fail("请输入正确的密码3-16位");
+        done(false)
+      } else if (jiumima !== this.user.password) {
+        //旧密码是否一致
+        this.$toast.fail("原密码不一致");
+        done(false)
+      } else {
+          done()
+        //都满足修改密码
+        let id = this.user.id;
+        let res = await bianji(id, { password: xinmima });
+        if (res.data.message === "修改成功") {
+          //修改成功
+          this.$toast.success("修改成功");
+          //改变当前密码
+          this.user.password = xinmima;
+        }else{
+            this.$toast.fail(res.data.message);
+        }
+      }
+     }else{
+         done()
+     }
     }
   },
   //页面一开始
