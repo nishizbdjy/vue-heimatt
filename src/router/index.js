@@ -3,7 +3,7 @@ import vueRouter from 'vue-router'//引入vue-router
 import login from '@/views/login.vue'//登录页
 import personal from '@/views/personal.vue'//个人中心页
 import editPersonal from '@/views/editPersonal.vue'//编辑资料页
-import index from  '@/views/index.vue'//主页
+import index from '@/views/index.vue'//主页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -23,15 +23,21 @@ let router = new vueRouter({
         },
         //编辑资料页
         {
-            name : 'editPersonal',
-            path : '/editPersonal/:id',
-            component:editPersonal,
+            name: 'editPersonal',
+            path: '/editPersonal/:id',
+            component: editPersonal,
+        },
+        //重定向主页
+        {
+            name: 'index',
+            path: '/',
+            redirect:{path: '/index'}
         },
         //主页
         {
             name: 'index',
-            path : '/index',
-            component:index
+            path: '/index',
+            component: index
         }
     ]
 })
