@@ -5,7 +5,7 @@ import router from '@/router'
 //初始化css
 import '@/style/reset.css'
 //引入vant框架
-import { Toast, Uploader, Dialog, Field, Picker,Tab,Tabs,List} from 'vant'
+import { Toast, Uploader, Dialog, Field, Picker,Tab,Tabs,List,PullRefresh} from 'vant'
 //挂载
 Vue.use(Toast)//轻提示
   .use(Uploader)//文件上传
@@ -14,6 +14,7 @@ Vue.use(Toast)//轻提示
   .use(Picker)//picker选择器
   .use(Tab).use(Tabs)//滑动标签页
   .use(List)//list列表
+  .use(PullRefresh)//下拉刷新
 Vue.config.productionTip = false
 
 new Vue({

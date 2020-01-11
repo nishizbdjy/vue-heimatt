@@ -32,7 +32,9 @@
           finished-text="没有更多了"
           @load="onLoad"
         >
-          <xinwenliebiao v-for="v in value.postList" :key="v.id" :post="v"></xinwenliebiao>
+          <van-pull-refresh v-model="value.isLoading" @refresh="onRefresh" success-text="刷新成功">
+            <xinwenliebiao v-for="v in value.postList" :key="v.id" :post="v"></xinwenliebiao>
+          </van-pull-refresh>
         </van-list>
       </van-tab>
     </van-tabs>
@@ -64,7 +66,8 @@ export default {
         pageSize: 5, //文章显示数
         postList: [], //当前文章
         finished: false, //是否加载完成
-        loading: false //当前加载状态
+        loading: false, //当前加载状态
+        isLoading: false //下拉刷新状态
       };
     });
     this.init();
@@ -86,8 +89,7 @@ export default {
         pageIndex: this.cateList[this.active].pageIndex, //当前页数
         category: this.cateList[this.active].id //栏目id
       });
-      console.log(res1);
-
+      // console.log(res1);
       //将文章添加到当前栏目中
       this.cateList[this.active].postList.push(...res1.data.data);
       //当前栏目文章加载完成
@@ -98,16 +100,33 @@ export default {
       if (this.cateList[this.active].loading) {
         this.cateList[this.active].loading = false; //加载完成
       }
-      console.log(this.cateList[this.active].postList);
-      
+      //下拉刷新
+      if (this.cateList[this.active].isLoading) {
+        this.cateList[this.active].isLoading = false; //刷新完成
+      }
+      // console.log(this.cateList[this.active].postList);
     },
     //下拉加载
     onLoad() {
-      //页数加加
-      ++this.cateList[this.active].pageIndex
+      //页面没在下刷新才执行
+      if (this.cateList[this.active].isLoading === false) {
+        //页数加加
+        ++this.cateList[this.active].pageIndex;
+        //模拟异步
+        setTimeout(() => {
+          this.init();
+        }, 1000);
+      }
+    },
+    //下拉刷新
+    onRefresh() {
+      this.cateList[this.active].pageIndex = 1; //重置页数
+      this.cateList[this.active].postList.length = 0; //重置文章
+      //模拟异步
       setTimeout(() => {
         this.init();
       }, 1000);
+      this.cateList[this.active].finished = false;//告诉上拉加载可以继续上拉加载
     }
   }
 };
