@@ -61,7 +61,7 @@ export default {
   display: flex;
   height: 123px;
   img {
-    flex: 33.333;
+    flex: 33.33;
     width: 30.33%;
     margin: 5px 2px;
   }
@@ -131,10 +131,11 @@ body {
 }
 .singlesp {
   border-bottom: 1px solid #ccc;
+  height: 100%;
   width: 100vw;
-
   .img {
     position: relative;
+    width: 100%;
     .van-icon-play {
       position: absolute;
       top: 50%;
@@ -147,15 +148,15 @@ body {
       text-align: center;
       line-height: 73.5px;
       border-radius: 50%;
-      box-shadow: 0px 0px 15px #fff
+      box-shadow: 0px 0px 15px #fff;
     }
   }
   p {
-    padding: 10px;
+    padding: 10px 0; 
   }
   span {
     display: inline-block;
-    padding: 2px;
+    padding: 2px 0;
   }
   img {
     width: 100%;

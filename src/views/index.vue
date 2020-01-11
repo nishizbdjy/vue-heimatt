@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- van -->
-    <van-tabs v-model="active" sticky swipeable>
+    <van-tabs v-model="active" sticky>
       <!-- 循环栏目 -->
       <van-tab :title="value.name" v-for="value in cateList" :key="value.id">
         <van-list
