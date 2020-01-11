@@ -15,7 +15,7 @@ data(){
 //点击事件
 methods : {
     wbdl(e){
-      this.$emit('bdl',e)
+      this.$emit('click',e)
     }
 }
 }

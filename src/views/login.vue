@@ -29,7 +29,7 @@
         没有账号？
         <a href="#/register" class>去注册</a>
       </p>
-      <hmbutton type="hong" @bdl="btndian">登陆</hmbutton>
+      <hmbutton type="hong" @click="btndian">登陆</hmbutton>
     </div>
   </div>
 </template>

@@ -6,7 +6,10 @@
         <img :src="user.head_img" alt />
         <div class="profile-center">
           <div class="name">
-            <span :class="['iconfont',{'iconxingbienan':user.gender==1,'iconxingbienv':user.gender==0}]"></span>{{user.nickname}}
+            <span
+              :class="['iconfont',{'iconxingbienan':user.gender==1,'iconxingbienv':user.gender==0}]"
+            ></span>
+            {{user.nickname}}
           </div>
           <div class="time">{{user.create_date}}</div>
         </div>
@@ -17,7 +20,7 @@
     <cell title="我的跟帖" value="跟帖/回复"></cell>
     <cell title="我的收藏" value="文章/视频"></cell>
     <cell title="设置"></cell>
-    <hmbutton type="hong">退出</hmbutton>
+    <hmbutton type="hong" @click="tuichu">退出</hmbutton>
   </div>
 </template>
 
@@ -31,7 +34,7 @@ import { user } from "@/apis/user.js";
 export default {
   data() {
     return {
-      user:{}
+      user: {}
     };
   },
   components: {
@@ -46,13 +49,22 @@ export default {
     console.log(res);
     if (res.data.message === "获取成功") {
       //赋值
-      this.user = res.data.data
+      this.user = res.data.data;
       //拼接img地址
-      this.user.head_img = 'http://127.0.0.1:3000'+this.user.head_img
+      this.user.head_img = "http://127.0.0.1:3000" + this.user.head_img;
       //时间
-      this.user.create_date = this.user.create_date.substring(0,10)
+      this.user.create_date = this.user.create_date.substring(0, 10);
     }
     //获取失败情况拦截器已经判断
+  },
+  methods: {
+    //退出
+    tuichu() {
+      // 清除本地token
+      localStorage.removeItem("token");
+      //跳转主页
+      this.$router.push({ path: "/index" });
+    }
   }
 };
 </script>
