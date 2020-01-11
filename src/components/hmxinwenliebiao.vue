@@ -131,7 +131,8 @@ body {
 }
 .singlesp {
   border-bottom: 1px solid #ccc;
-  height: 290px;
+  width: 100vw;
+
   .img {
     position: relative;
     .van-icon-play {

@@ -24,9 +24,16 @@
     <van-tabs v-model="active" sticky swipeable>
       <!-- 循环栏目 -->
       <van-tab :title="value.name" v-for="value in cateList" :key="value.id">
-        <!-- <van-list v-model="loading" :finished="finished" :immediate-check="false" :offset="10" finished-text="没有更多了" @load="onLoad"> -->
+        <van-list
+          v-model="value.loading"
+          :finished="value.finished"
+          :immediate-check="false"
+          :offset="10"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
           <xinwenliebiao v-for="v in value.postList" :key="v.id" :post="v"></xinwenliebiao>
-        <!-- </van-list> -->
+        </van-list>
       </van-tab>
     </van-tabs>
   </div>
@@ -34,7 +41,7 @@
 
 <script>
 import { lanmu, wenzhang } from "@/apis/wenzhang.js";
-import xinwenliebiao from '@/components/hmxinwenliebiao.vue'
+import xinwenliebiao from "@/components/hmxinwenliebiao.vue";
 export default {
   data() {
     return {
@@ -42,7 +49,7 @@ export default {
       cateList: [] //栏目列表
     };
   },
-  components:{
+  components: {
     xinwenliebiao
   },
   async mounted() {
@@ -53,25 +60,54 @@ export default {
     this.cateList = this.cateList.map(value => {
       return {
         ...value,
-        pageInde: 1, //文章当前页
+        pageIndex: 1, //文章当前页
         pageSize: 5, //文章显示数
         postList: [], //当前文章
-        finished:false,//是否加载完成
-        loading:false//当前加载状态
+        finished: false, //是否加载完成
+        loading: false //当前加载状态
       };
     });
-    //获取文章
-    let res1 = await wenzhang({
-      pageSize: this.cateList[this.active].pageSize, //当前显示数量
-      pageInde: this.cateList[this.active].pageInde, //当前页数
-      category: this.cateList[this.active].id //栏目id
-    });
-    this.cateList[this.active].postList.push(...res1.data.data)
-        console.log(this.cateList);
+    this.init();
   },
-  methods:{
-    load(){
-   
+  //侦听栏目索引变化
+  watch: {
+    active() {
+      //防止二次加载
+      if (this.cateList[this.active].postList.length === 0) {
+        this.init();
+      }
+    }
+  },
+  methods: {
+    async init() {
+      //获取文章
+      let res1 = await wenzhang({
+        pageSize: this.cateList[this.active].pageSize, //当前显示数量
+        pageIndex: this.cateList[this.active].pageIndex, //当前页数
+        category: this.cateList[this.active].id //栏目id
+      });
+      console.log(res1);
+
+      //将文章添加到当前栏目中
+      this.cateList[this.active].postList.push(...res1.data.data);
+      //当前栏目文章加载完成
+      if (res1.data.data.length < this.cateList[this.active].pageSize) {
+        this.cateList[this.active].finished = true; //加载完成
+      }
+      //加载状态
+      if (this.cateList[this.active].loading) {
+        this.cateList[this.active].loading = false; //加载完成
+      }
+      console.log(this.cateList[this.active].postList);
+      
+    },
+    //下拉加载
+    onLoad() {
+      //页数加加
+      ++this.cateList[this.active].pageIndex
+      setTimeout(() => {
+        this.init();
+      }, 1000);
     }
   }
 };
