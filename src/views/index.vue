@@ -13,18 +13,28 @@
       </div>
       <!-- 个人中心 -->
       <div class="grzx">
-        <i data-v-a83bd3b0 class="van-icon van-icon-manager-o" @click="$router.push({name:'personal'})"></i>
+        <i
+          data-v-a83bd3b0
+          class="van-icon van-icon-manager-o"
+          @click="$router.push({name:'personal'})"
+        ></i>
       </div>
     </div>
     <!-- van -->
     <van-tabs v-model="active" sticky swipeable>
-      <van-tab :title="value.name" v-for="value in cateList" :key="value.id">内容 1</van-tab>
+      <!-- 循环栏目 -->
+      <van-tab :title="value.name" v-for="value in cateList" :key="value.id">
+        <!-- <van-list v-model="loading" :finished="finished" :immediate-check="false" :offset="10" finished-text="没有更多了" @load="onLoad"> -->
+          <xinwenliebiao v-for="v in value.postList" :key="v.id" :post="v"></xinwenliebiao>
+        <!-- </van-list> -->
+      </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
-import { lanmu,wenzhang } from "@/apis/wenzhang.js";
+import { lanmu, wenzhang } from "@/apis/wenzhang.js";
+import xinwenliebiao from '@/components/hmxinwenliebiao.vue'
 export default {
   data() {
     return {
@@ -32,11 +42,37 @@ export default {
       cateList: [] //栏目列表
     };
   },
+  components:{
+    xinwenliebiao
+  },
   async mounted() {
     let res = await lanmu();
     console.log(res);
     this.cateList = res.data.data;
-
+    //改造数据
+    this.cateList = this.cateList.map(value => {
+      return {
+        ...value,
+        pageInde: 1, //文章当前页
+        pageSize: 5, //文章显示数
+        postList: [], //当前文章
+        finished:false,//是否加载完成
+        loading:false//当前加载状态
+      };
+    });
+    //获取文章
+    let res1 = await wenzhang({
+      pageSize: this.cateList[this.active].pageSize, //当前显示数量
+      pageInde: this.cateList[this.active].pageInde, //当前页数
+      category: this.cateList[this.active].id //栏目id
+    });
+    this.cateList[this.active].postList.push(...res1.data.data)
+        console.log(this.cateList);
+  },
+  methods:{
+    load(){
+   
+    }
   }
 };
 </script>
