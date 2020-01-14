@@ -5,7 +5,7 @@
         <van-icon name="arrow-left back" @click="$router.back()" />
         <span class="iconfont iconnew new"></span>
       </div>
-      <span @click="guanzhu" :class="{hong:user.has_follow}">关注</span>
+      <span @click="guanzhu" :class="{hong:user.has_follow}">{{user.has_follow?'关注':'已关注'}}</span>
     </div>
     <div class="detail">
       <div class="title">{{user.title}}</div>

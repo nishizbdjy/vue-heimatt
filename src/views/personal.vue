@@ -21,6 +21,7 @@
     <cell title="我的收藏" value="文章/视频"></cell>
     <cell title="设置"></cell>
     <hmbutton type="hong" @click="tuichu">退出</hmbutton>
+    <hmbutton type="pink" @click="$router.push({name: 'index'})">返回主页</hmbutton>
   </div>
 </template>
 

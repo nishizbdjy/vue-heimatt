@@ -2,7 +2,7 @@
   <!-- 编辑资料顶部栏的封装 -->
   <div class="header">
     <div class="left">
-      <span class="iconfont iconjiantou2"></span>
+      <span class="iconfont iconjiantou2" @click="$router.back()"></span>
       {{left}}
     </div>
     <div class="center">{{title}}</div>
