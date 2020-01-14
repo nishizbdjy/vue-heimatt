@@ -23,8 +23,9 @@
         controls
       ></video>
       <div class="opt">
-        <span class="like">
-          <van-icon name="good-job-o" />点赞
+        <span class="like" :class="{dianz:user.has_like}" @click="dianzhan">
+          <van-icon name="good-job-o" />
+          {{user.like_length}}点赞
         </span>
         <span class="chat">
           <van-icon name="chat" class="w" />微信
@@ -62,7 +63,12 @@
 
 <script>
 //获取文章详情
-import { wenzhangxiangqing, guanzhu, quxiaoguanzhu } from "@/apis/wenzhang.js";
+import {
+  wenzhangxiangqing,
+  guanzhu,
+  quxiaoguanzhu,
+  dianzan
+} from "@/apis/wenzhang.js";
 export default {
   data() {
     return {
@@ -75,11 +81,12 @@ export default {
     let res = await wenzhangxiangqing(id);
     console.log(res);
     this.user = res.data.data;
+    console.log(this.user.has_like);
   },
   methods: {
+    //关注
     async guanzhu() {
       console.log(this.user);
-      
       let res;
       //判断是否已经登录
       let id = this.user.user.id;
@@ -90,9 +97,23 @@ export default {
       } else {
         res = await guanzhu(this.user.user.id);
       }
-      this.$toast.success(res.data.message)
+      this.$toast.success(res.data.message);
       //取反
-      this.user.has_follow = !this.user.has_follow
+      this.user.has_follow = !this.user.has_follow;
+    },
+    //点赞
+    async dianzhan() {
+      let res = await dianzan(this.$route.params.id);
+      // console.log(res);
+      if (res.data.message === "点赞成功") {
+        ++this.user.like_length;
+        this.$toast.success("点赞成功");
+        this.user.has_like = !this.user.has_like;
+      } else {
+        --this.user.like_length;
+        this.$toast.success("取消成功");
+        this.user.has_like = !this.user.has_like;
+      }
     }
   }
 };
