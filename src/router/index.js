@@ -5,6 +5,7 @@ import personal from '@/views/personal.vue'//个人中心页
 import editPersonal from '@/views/editPersonal.vue'//编辑资料页
 import index from '@/views/index.vue'//主页
 import articleDetail from '@/views/articleDetail.vue'//文章详情页
+import register from '@/views/register.vue'//文章详情页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -32,7 +33,7 @@ let router = new vueRouter({
         {
             name: 'index',
             path: '/',
-            redirect:{path: '/index'}
+            redirect: { path: '/index' }
         },
         //主页
         {
@@ -46,13 +47,19 @@ let router = new vueRouter({
             path: '/articleDetail/:id',
             component: articleDetail
         },
+        //注册页
+        {
+            name: 'register',
+            path: '/register',
+            component: register
+        },
     ]
 })
 //导航守卫
 router.beforeEach((to, from, next) => {
     //to :目标路由 from : 原路由 next: 下一步操作
     //判断登陆的是个人中心页
-    if (to.path.indexOf('/personal') !==-1) {
+    if (to.path.indexOf('/personal') !== -1) {
         //判断token
         let token = localStorage.getItem('token')
         if (token) {

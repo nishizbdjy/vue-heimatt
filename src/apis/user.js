@@ -33,3 +33,11 @@ export const bianji = (id,data)=>{
         data
     })
 }
+//注册用户
+export const zhuce = (data)=>{
+    return axios({
+        method : 'post',
+        url : `/register`,
+        data
+    })
+}
