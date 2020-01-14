@@ -37,7 +37,7 @@
       <h2>精彩跟帖</h2>
       <div class="item">
         <div class="head">
-          <img src="http://127.0.0.1:3000/uploads/image/IMG1569393358174.jpeg" alt />
+          <img :src="user.user.head_img" alt />
           <div>
             <p>火星网友</p>
             <span>2小时前</span>
@@ -49,6 +49,7 @@
       <div class="more">更多跟帖</div>
     </div>
     <!-- 评论 -->
+    <pinglunlan :post="user"></pinglunlan>
   </div>
   <!-- 访问一个不存在的变量，则报错：** is not defined
   访问一个对象不存在的属性，则返回undefined-->
@@ -67,21 +68,32 @@ import {
   wenzhangxiangqing,
   guanzhu,
   quxiaoguanzhu,
-  dianzan
+  dianzan,
+  shoucang
 } from "@/apis/wenzhang.js";
+//底部评论
+import pinglunlan from "@/components/pinglunlan.vue";
 export default {
   data() {
     return {
-      user: {}
+      user: {
+        user: {} //防止异步请求未完成加载
+      }
     };
+  },
+  components: {
+    pinglunlan
   },
   async mounted() {
     // 根据id获取文章的详情，实现文章详情的动态渲染
     let id = this.$route.params.id;
     let res = await wenzhangxiangqing(id);
+    if (res.status == "200") {
+      res.data.data.user.head_img =
+        "http://127.0.0.1:3000" + res.data.data.user.head_img;
+      this.user = res.data.data;
+    }
     console.log(res);
-    this.user = res.data.data;
-    console.log(this.user.has_like);
   },
   methods: {
     //关注
@@ -114,12 +126,19 @@ export default {
         this.$toast.success("取消成功");
         this.user.has_like = !this.user.has_like;
       }
-    }
+    },
+
   }
 };
 </script>
 
 <style lang='less' scoped>
+/deep/.addcomment {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+}
 .hong {
   background-color: #f00;
   color: #fff !important ;

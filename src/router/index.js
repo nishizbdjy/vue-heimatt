@@ -52,7 +52,7 @@ let router = new vueRouter({
 router.beforeEach((to, from, next) => {
     //to :目标路由 from : 原路由 next: 下一步操作
     //判断登陆的是个人中心页
-    if (to.path.indexOf('/personal') == 0) {
+    if (to.path.indexOf('/personal') !==-1) {
         //判断token
         let token = localStorage.getItem('token')
         if (token) {
