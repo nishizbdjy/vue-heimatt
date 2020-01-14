@@ -16,7 +16,7 @@
         <i
           data-v-a83bd3b0
           class="van-icon van-icon-manager-o"
-          @click="$router.push({name:'personal'})"
+          @click="$router.push({path:`/personal/${id}`})"
         ></i>
       </div>
     </div>
@@ -33,7 +33,12 @@
           @load="onLoad"
         >
           <van-pull-refresh v-model="value.isLoading" @refresh="onRefresh" success-text="刷新成功">
-            <xinwenliebiao v-for="v in value.postList" :key="v.id" :post="v"></xinwenliebiao>
+            <xinwenliebiao
+              v-for="v in value.postList"
+              :key="v.id"
+              :post="v"
+              @click="$router.push({path:`/articleDetail/${v.id}`})"
+            ></xinwenliebiao>
           </van-pull-refresh>
         </van-list>
       </van-tab>
@@ -48,15 +53,20 @@ export default {
   data() {
     return {
       active: localStorage.getItem("token") ? 1 : 0, //根据用户登陆选择默认标签
-      cateList: [] //栏目列表
+      cateList: [], //栏目列表
+      id: "" //用户id
     };
   },
   components: {
     xinwenliebiao
   },
   async mounted() {
+    if (localStorage.getItem("user")) {
+      let id = localStorage.getItem("user");
+      this.id = JSON.parse(id).id;
+    }
     let res = await lanmu();
-    console.log(res);
+    // console.log(res);
     this.cateList = res.data.data;
     //改造数据
     this.cateList = this.cateList.map(value => {
@@ -90,6 +100,15 @@ export default {
         category: this.cateList[this.active].id //栏目id
       });
       // console.log(res1);
+      //后台发布文章后路径是相对路径，判断拼接
+      for (let i = 0; i < res1.data.data.length; i++) {
+        for (let j = 0; j < res1.data.data[i].cover.length; j++) {
+          if (res1.data.data[i].cover[j].url.indexOf("http") === -1) {
+            res1.data.data[i].cover[j].url =
+              "http://127.0.0.1:3000" + res1.data.data[i].cover[j].url;
+          }
+        }
+      }
       //将文章添加到当前栏目中
       this.cateList[this.active].postList.push(...res1.data.data);
       //当前栏目文章加载完成
@@ -126,7 +145,7 @@ export default {
       setTimeout(() => {
         this.init();
       }, 1000);
-      this.cateList[this.active].finished = false;//告诉上拉加载可以继续上拉加载
+      this.cateList[this.active].finished = false; //告诉上拉加载可以继续上拉加载
     }
   }
 };

@@ -4,6 +4,7 @@ import login from '@/views/login.vue'//登录页
 import personal from '@/views/personal.vue'//个人中心页
 import editPersonal from '@/views/editPersonal.vue'//编辑资料页
 import index from '@/views/index.vue'//主页
+import articleDetail from '@/views/articleDetail.vue'//文章详情页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -38,7 +39,13 @@ let router = new vueRouter({
             name: 'index',
             path: '/index',
             component: index
-        }
+        },
+        //文章详情页
+        {
+            name: 'articleDetail',
+            path: '/articleDetail/:id',
+            component: articleDetail
+        },
     ]
 })
 //导航守卫

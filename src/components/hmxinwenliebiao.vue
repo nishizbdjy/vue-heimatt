@@ -1,6 +1,6 @@
 <template>
   <!-- 新闻列表 -->
-  <div class="single" v-if="post.type===1&&post.cover.length <=2">
+  <div class="single" v-if="post.type===1&&post.cover.length <=2" @click="xiangqing">
     <div class="left">
       <p class="content">{{post.title}}</p>
       <p class="info">
@@ -11,7 +11,7 @@
     <img :src="post.cover[0].url" alt />
   </div>
   <!-- 视频结构 -->
-  <div class="singlesp" v-else-if="post.type===2">
+  <div class="singlesp" v-else-if="post.type===2" @click="xiangqing">
     <div class="left">
       <p class="content">{{post.title}}</p>
       <div class="img">
@@ -27,7 +27,7 @@
     </div>
   </div>
   <!-- 三图 -->
-  <div class="santu" v-else-if="post.type===1&&post.cover.length >=3">
+  <div class="santu" v-else-if="post.type===1&&post.cover.length >=3" @click="xiangqing">
     <div class="left">
       <p class="content">{{post.title}}</p>
       <div class="san">
@@ -45,7 +45,12 @@
 
 <script>
 export default {
-  props: ["post"]
+  props: ["post"],
+  methods:{
+    xiangqing(e){
+        this.$emit('click',e)
+    }
+  }
 };
 </script>
 

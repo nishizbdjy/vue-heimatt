@@ -14,3 +14,9 @@ export const wenzhang = (params)=>{
         params
     })
 }
+//获取文章详情‘
+export const wenzhangxiangqing = (id)=>{
+    return axios({
+        url : `/post/${id}`,
+    })
+}
