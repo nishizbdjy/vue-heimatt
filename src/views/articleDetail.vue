@@ -5,7 +5,7 @@
         <van-icon name="arrow-left back" @click="$router.back()" />
         <span class="iconfont iconnew new"></span>
       </div>
-      <span>关注</span>
+      <span @click="guanzhu" :class="{hong:user.has_follow}">关注</span>
     </div>
     <div class="detail">
       <div class="title">{{user.title}}</div>
@@ -14,11 +14,14 @@
         <span>{{user.create_date&&user.create_date.substring(0,10)}}</span>
       </div>
       <!-- 文章 -->
-      <div class="content" v-html="user.content">
-  
-      </div>
+      <div class="content" v-html="user.content" v-if="user.type===1"></div>
       <!-- 视频 -->
-      <!-- <video :src="wenzhang.content" v-if="wenzhang.type===2" poster="http://127.0.0.1:3000\uploads\image/1111.jpg" controls></video> -->
+      <video
+        :src="user.content"
+        v-if="user.type===2"
+        poster="http://127.0.0.1:3000\uploads\image/1111.jpg"
+        controls
+      ></video>
       <div class="opt">
         <span class="like">
           <van-icon name="good-job-o" />点赞
@@ -59,19 +62,38 @@
 
 <script>
 //获取文章详情
-import { wenzhangxiangqing } from "@/apis/wenzhang.js";
+import { wenzhangxiangqing, guanzhu, quxiaoguanzhu } from "@/apis/wenzhang.js";
 export default {
-  data(){
-    return{
-     user: {}
-    }
+  data() {
+    return {
+      user: {}
+    };
   },
   async mounted() {
     // 根据id获取文章的详情，实现文章详情的动态渲染
     let id = this.$route.params.id;
     let res = await wenzhangxiangqing(id);
     console.log(res);
-    this.user = res.data.data
+    this.user = res.data.data;
+  },
+  methods: {
+    async guanzhu() {
+      console.log(this.user);
+      
+      let res;
+      //判断是否已经登录
+      let id = this.user.user.id;
+      console.log(id);
+      if (this.user.has_follow) {
+        //如果关注就取消关注
+        res = await quxiaoguanzhu(id);
+      } else {
+        res = await guanzhu(this.user.user.id);
+      }
+      this.$toast.success(res.data.message)
+      //取反
+      this.user.has_follow = !this.user.has_follow
+    }
   }
 };
 </script>

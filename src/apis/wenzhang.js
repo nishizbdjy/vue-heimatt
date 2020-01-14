@@ -14,9 +14,21 @@ export const wenzhang = (params)=>{
         params
     })
 }
-//获取文章详情‘
+//获取文章详情
 export const wenzhangxiangqing = (id)=>{
     return axios({
         url : `/post/${id}`,
+    })
+}
+//关注用户
+export const guanzhu = (id)=>{
+    return axios ({
+        url : `/user_follows/${id}`,
+    })
+}
+//取消关注用户
+export const quxiaoguanzhu = (id)=>{
+    return axios ({
+        url : `/user_unfollow/${id}`,
     })
 }

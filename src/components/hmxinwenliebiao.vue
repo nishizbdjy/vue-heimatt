@@ -1,39 +1,35 @@
 <template>
-  <!-- 新闻列表 -->
-  <div class="single" v-if="post.type===1&&post.cover.length <=2" @click="xiangqing">
-    <div class="left">
-      <p class="content">{{post.title}}</p>
-      <p class="info">
-        <span>{{post.user.nickname}}</span>
-        <span>{{post.comment_length}}跟帖</span>
-      </p>
+  <div class="liebiao">
+    <!-- 左右的文章结构 -->
+    <div class="single" v-if="post.type===1 && post.cover.length <=2" @click="xiangqing">
+      <div class="left">
+        <p class="content">{{post.title}}</p>
+        <p class="info">
+          <span>{{post.user.nickname}}</span>
+          <span>{{post.comment_length}}跟帖</span>
+        </p>
+      </div>
+      <img :src="post.cover[0].url" alt />
     </div>
-    <img :src="post.cover[0].url" alt />
-  </div>
-  <!-- 视频结构 -->
-  <div class="singlesp" v-else-if="post.type===2" @click="xiangqing">
-    <div class="left">
+    <!-- 视频结构 -->
+    <div class="singlev" v-else-if="post.type===2" @click="xiangqing">
       <p class="content">{{post.title}}</p>
-      <div class="img">
+      <div class="playarea">
         <img :src="post.cover[0].url" alt />
-        <i data-v-4b4388d1 class="van-icon van-icon-play">
-          <!---->
-        </i>
+        <div class="playicon">
+          <van-icon name="play" />
+        </div>
       </div>
       <p class="info">
         <span>{{post.user.nickname}}</span>
         <span>{{post.comment_length}}跟帖</span>
       </p>
     </div>
-  </div>
-  <!-- 三图 -->
-  <div class="santu" v-else-if="post.type===1&&post.cover.length >=3" @click="xiangqing">
-    <div class="left">
+    <!-- 三张图结构 -->
+    <div class="singlet" v-else-if="post.type===1 && post.cover.length >=3" @click="xiangqing">
       <p class="content">{{post.title}}</p>
-      <div class="san">
-        <img :src="post.cover[0].url" alt />
-        <img :src="post.cover[1].url" alt />
-        <img :src="post.cover[2].url" alt />
+      <div class="imgs">
+        <img :src="item.url" alt v-for="item in post.cover" :key="item.id" />
       </div>
       <p class="info">
         <span>{{post.user.nickname}}</span>
@@ -46,31 +42,27 @@
 <script>
 export default {
   props: ["post"],
-  methods:{
-    xiangqing(e){
-        this.$emit('click',e)
+  mounted() {
+    // console.log(this.post);
+  },
+  methods: {
+    xiangqing(e) {
+      //为了让主页接收
+      this.$emit("click", e);
     }
   }
 };
 </script>
 
 <style lang='less' scoped>
-.santu {
-  border-bottom: 1px solid #ccc;
-  span {
-    display: inline-block;
-    padding: 10px 0;
-  }
+.liebiao{
+  width: 100vw;
 }
-.san {
-  display: flex;
-  height: 123px;
-  img {
-    flex: 33.33;
-    width: 30.33%;
-    margin: 5px 2px;
-  }
+body {
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
+// 提取的复用样式
 .content {
   font-size: 14px;
   padding: 0px 5px;
@@ -85,13 +77,10 @@ export default {
   font-size: 12px;
   padding-left: 5px;
   color: #999;
+  margin: 10px 0;
   > span:nth-of-type(1) {
     padding-right: 15px;
   }
-}
-body {
-  overflow-x: hidden;
-  overflow-y: hidden;
 }
 .single {
   padding: 15px 0px;
@@ -134,37 +123,47 @@ body {
     }
   }
 }
-.singlesp {
+.singlev {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0px;
   border-bottom: 1px solid #ccc;
-  height: 100%;
-  width: 100vw;
-  .img {
-    position: relative;
+  .playarea {
     width: 100%;
-    .van-icon-play {
+    position: relative;
+    > img {
+      width: 100%;
+      display: block;
+      margin-bottom: 10px;
+    }
+    > .playicon {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 55px;
-      color: #fff;
-      width: 15vw;
-      height: 15vw;
-      text-align: center;
-      line-height: 60.5px;
+      width: 60/360 * 100vw;
+      height: 60/360 * 100vw;
       border-radius: 50%;
-      box-shadow: 0px 0px 15px #fff;
+      background-color: rgba(0, 0, 0, 0.2);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 40/360 * 100vw;
+      color: #fff;
+      line-height: 65/360 * 100vw;
+      box-shadow: 0 0 15px #fff;
     }
   }
-  p {
-    padding: 10px 0; 
-  }
-  span {
-    display: inline-block;
-    padding: 2px 0;
-  }
-  img {
-    width: 100%;
+}
+.singlet {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0px;
+  border-bottom: 1px solid #ccc;
+  > .imgs {
+    display: flex;
+    justify-content: space-around;
+    > img {
+      width: 32.33%;
+    }
   }
 }
 </style>
