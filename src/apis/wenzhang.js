@@ -38,9 +38,15 @@ export const dianzan =(id)=>{
         url : `/post_like/${id}`
     })
 }
-//搜藏文章
+//收藏文章
 export const shoucang =(id)=>{
     return axios ({
         url : `/post_star/${id}`
+    })
+}
+//评论列表
+export const pinglunliebiao =(id)=>{
+    return axios({
+        url : `/post_comment/${id}`
     })
 }

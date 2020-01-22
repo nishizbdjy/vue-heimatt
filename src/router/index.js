@@ -8,6 +8,7 @@ import articleDetail from '@/views/articleDetail.vue'//文章详情页
 import register from '@/views/register.vue'//文章详情页
 import myFollows from '@/views/myFollows.vue'//我的关注页
 import myStars from '@/views/myStars.vue'//我的收藏页
+import comment from '@/views/comment.vue'//评论页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -66,6 +67,12 @@ let router = new vueRouter({
             name: 'myStars',
             path: `/myStars/:id`,
             component: myStars
+        },
+        //评论页
+        {
+            name: 'comment',
+            path: `/comment/:id`,
+            component: comment
         }
     ]
 })

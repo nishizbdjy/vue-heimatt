@@ -2,11 +2,11 @@
   <div class="comment">
     <div class="addcomment" v-show="!isFocus">
       <input type="text" placeholder="写跟帖" @focus="handlerFocus" />
-      <span class="comment">
+      <span class="comment" @click="$router.push({path:`/comment/${post.id}`})" v-if="!post.pinglun">
         <i class="iconfont iconpinglun-"></i>
         <em>{{post.comment_length}}</em>
       </span>
-      <i class="iconfont iconshoucang" :class="{hong:post.has_star}" @click="shoucang"></i>
+      <i class="iconfont iconshoucang" :class="{hong:post.has_star}" @click="shoucang" ></i>
       <i class="iconfont iconfenxiang"></i>
     </div>
     <div class="inputcomment" v-show="isFocus">
@@ -29,7 +29,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.post);
+    // console.log(this.post);
   },
   methods: {
     //   获取焦点时触发
