@@ -7,6 +7,7 @@ import index from '@/views/index.vue'//主页
 import articleDetail from '@/views/articleDetail.vue'//文章详情页
 import register from '@/views/register.vue'//文章详情页
 import myFollows from '@/views/myFollows.vue'//我的关注页
+import myStars from '@/views/myStars.vue'//我的收藏页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -56,9 +57,15 @@ let router = new vueRouter({
         },
         //我的关注页
         {
-            name : 'myFollows',
-            path:`/myFollows/:id`,
+            name: 'myFollows',
+            path: `/myFollows/:id`,
             component: myFollows
+        },
+        //我的收藏页
+        {
+            name: 'myStars',
+            path: `/myStars/:id`,
+            component: myStars
         }
     ]
 })

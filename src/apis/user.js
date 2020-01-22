@@ -46,4 +46,10 @@ export const userguanzhu =()=>{
   return axios({
       url :`/user_follows`
   })
-}  
+} 
+//用户收藏
+export const usershoucang =()=>{
+    return axios({
+        url :'/user_star'
+    })
+  }
