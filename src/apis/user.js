@@ -41,3 +41,9 @@ export const zhuce = (data)=>{
         data
     })
 }
+//用户关注列表
+export const userguanzhu =()=>{
+  return axios({
+      url :`/user_follows`
+  })
+}  

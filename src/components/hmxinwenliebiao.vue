@@ -1,5 +1,5 @@
 <template>
-  <div class="liebiao">
+  <div class="liebiao" v-if="post">
     <!-- 左右的文章结构 -->
     <div class="single" v-if="post.type===1 && post.cover.length <=2" @click="xiangqing">
       <div class="left">

@@ -16,7 +16,7 @@
         <span class="iconfont iconjiantou1"></span>
       </div>
     </router-link>
-    <cell title="我的关注" value="关注的用户"></cell>
+    <cell title="我的关注" value="关注的用户" @click="$router.push({path:`/myFollows/${$route.params.id}`})"></cell>
     <cell title="我的跟帖" value="跟帖/回复"></cell>
     <cell title="我的收藏" value="文章/视频"></cell>
     <cell title="设置"></cell>

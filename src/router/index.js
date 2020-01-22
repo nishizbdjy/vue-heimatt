@@ -6,6 +6,7 @@ import editPersonal from '@/views/editPersonal.vue'//编辑资料页
 import index from '@/views/index.vue'//主页
 import articleDetail from '@/views/articleDetail.vue'//文章详情页
 import register from '@/views/register.vue'//文章详情页
+import myFollows from '@/views/myFollows.vue'//我的关注页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -53,6 +54,12 @@ let router = new vueRouter({
             path: '/register',
             component: register
         },
+        //我的关注页
+        {
+            name : 'myFollows',
+            path:`/myFollows/:id`,
+            component: myFollows
+        }
     ]
 })
 //导航守卫
