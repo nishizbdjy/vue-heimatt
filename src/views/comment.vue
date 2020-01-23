@@ -10,7 +10,7 @@
             <p>{{value.user.nickname}}</p>
             <span>{{value.create_date.substring(0,10)}}</span>
           </div>
-          <span @click="huifu">回复</span>
+          <span @click="huifu(value)">回复</span>
         </div>
         <diguipl :post="value.parent" v-if="value.parent"></diguipl>
         <div class="text">{{value.content}}</div>
@@ -19,7 +19,7 @@
     <!-- 占位符 -->
     <div class="ZWF"></div>
     <!-- 底部 -->
-    <pinglunlan :post="user"></pinglunlan>
+    <pinglunlan :post="user" :obj="obj"></pinglunlan>
   </div>
 </template>
 
@@ -27,7 +27,11 @@
 //头部
 import hmheader from "@/components/header.vue";
 //评论列表
-import { pinglunliebiao, wenzhangxiangqing } from "@/apis/wenzhang.js";
+import {
+  pinglunliebiao,
+  wenzhangxiangqing,
+  fabiaopl
+} from "@/apis/wenzhang.js";
 //递归评论
 import diguipl from "@/components/diguipinglun.vue";
 //评论底部
@@ -36,7 +40,8 @@ export default {
   data() {
     return {
       pinglun: {}, //评论
-      user: {} //评论底部文章信息
+      user: {}, //评论底部文章信息
+      obj: {} //回复评论的数据
     };
   },
   components: {
@@ -60,8 +65,9 @@ export default {
   },
   methods: {
     //回复一级评论
-    huifu() {
-
+    huifu(value) {
+      console.log(value);
+      this.obj = value;
     }
   }
 };

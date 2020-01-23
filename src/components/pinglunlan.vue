@@ -26,7 +26,7 @@
 <script>
 import { shoucang, fabiaopl } from "@/apis/wenzhang.js";
 export default {
-  props: ["post"],
+  props: ["post", "obj"],
   data() {
     return {
       isFocus: false
@@ -34,6 +34,13 @@ export default {
   },
   mounted() {
     // console.log(this.post);
+  },
+  //监听父级的评论
+  watch: {
+    obj() {
+      //显示输入框
+      this.isFocus = true;
+    }
   },
   methods: {
     //   获取焦点时触发
@@ -50,16 +57,21 @@ export default {
     },
     //发表评论
     async pinglun() {
+      let data = {};
+      let id = this.post.id;
+      if (this.obj) {
+        data.parent_id = this.obj.id;
+      }
+      console.log(data);
+
       //获取内容
-      let value = this.$refs.commtext.value;
-      let id = this.post.id
-      if (value.length !== 0) {
-        let res = await fabiaopl(id, {
-          content: value
-        });
+      data.content = this.$refs.commtext.value;
+      if (data.content .length !== 0) {
+        let res = await fabiaopl(id, data);
         this.$toast.success(res.data.message);
         window.scrollTo(0, 0); //内容滚动到指定的坐标
-        location.reload()//刷新页面
+        location.reload(); //刷新页面
+        this.$refs.commtext.value = ""; //清除文本框
       } else {
         //内容为空
         this.$toast.fail("评论不能为空!");
