@@ -2,25 +2,29 @@
   <div class="comment">
     <div class="addcomment" v-show="!isFocus">
       <input type="text" placeholder="写跟帖" @focus="handlerFocus" />
-      <span class="comment" @click="$router.push({path:`/comment/${post.id}`})" v-if="!post.pinglun">
+      <span
+        class="comment"
+        @click="$router.push({path:`/comment/${post.id}`})"
+        v-if="!post.pinglun"
+      >
         <i class="iconfont iconpinglun-"></i>
         <em>{{post.comment_length}}</em>
       </span>
-      <i class="iconfont iconshoucang" :class="{hong:post.has_star}" @click="shoucang" ></i>
+      <i class="iconfont iconshoucang" :class="{hong:post.has_star}" @click="shoucang"></i>
       <i class="iconfont iconfenxiang"></i>
     </div>
     <div class="inputcomment" v-show="isFocus">
-      <textarea ref="commtext" rows="5" @blur="isFocus = false"></textarea>
+      <textarea ref="commtext" rows="5"></textarea>
       <div>
-        <span>发送</span>
-        <span>取消</span>
+        <span @click="pinglun">发送</span>
+        <span @click="isFocus = false">取消</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {shoucang} from "@/apis/wenzhang.js";
+import { shoucang, fabiaopl } from "@/apis/wenzhang.js";
 export default {
   props: ["post"],
   data() {
@@ -38,12 +42,28 @@ export default {
       this.$refs.commtext.focus();
     },
     //收藏
-    //收藏
     async shoucang() {
       let res = await shoucang(this.$route.params.id);
-      console.log(res);
-      this.$toast.success(res.data.message)
-      this.post.has_star = !this.post.has_star
+      // console.log(res);
+      this.$toast.success(res.data.message);
+      this.post.has_star = !this.post.has_star;
+    },
+    //发表评论
+    async pinglun() {
+      //获取内容
+      let value = this.$refs.commtext.value;
+      let id = this.post.id
+      if (value.length !== 0) {
+        let res = await fabiaopl(id, {
+          content: value
+        });
+        this.$toast.success(res.data.message);
+        window.scrollTo(0, 0); //内容滚动到指定的坐标
+        location.reload()//刷新页面
+      } else {
+        //内容为空
+        this.$toast.fail("评论不能为空!");
+      }
     }
   }
 };

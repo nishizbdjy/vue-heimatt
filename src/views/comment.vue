@@ -10,7 +10,7 @@
             <p>{{value.user.nickname}}</p>
             <span>{{value.create_date.substring(0,10)}}</span>
           </div>
-          <span>回复</span>
+          <span @click="huifu">回复</span>
         </div>
         <diguipl :post="value.parent" v-if="value.parent"></diguipl>
         <div class="text">{{value.content}}</div>
@@ -56,7 +56,12 @@ export default {
       this.user = res1.data.data;
       //告诉他隐藏评论图标
       this.user.pinglun = "这是评论页";
-      console.log(this.user);
+    }
+  },
+  methods: {
+    //回复一级评论
+    huifu() {
+
     }
   }
 };
