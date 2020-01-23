@@ -17,7 +17,7 @@
       <textarea ref="commtext" rows="5"></textarea>
       <div>
         <span @click="pinglun">发送</span>
-        <span @click="isFocus = false">取消</span>
+        <span @click="quxiao">取消</span>
       </div>
     </div>
   </div>
@@ -62,11 +62,9 @@ export default {
       if (this.obj) {
         data.parent_id = this.obj.id;
       }
-      console.log(data);
-
       //获取内容
       data.content = this.$refs.commtext.value;
-      if (data.content .length !== 0) {
+      if (data.content.length !== 0) {
         let res = await fabiaopl(id, data);
         this.$toast.success(res.data.message);
         window.scrollTo(0, 0); //内容滚动到指定的坐标
@@ -76,6 +74,11 @@ export default {
         //内容为空
         this.$toast.fail("评论不能为空!");
       }
+    },
+    //取消
+    quxiao() {
+      this.isFocus = false;
+      this.$refs.commtext.value = ""; //清除文本框
     }
   }
 };
