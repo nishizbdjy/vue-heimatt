@@ -12,14 +12,14 @@
           </div>
           <span @click="huifu(value)">回复</span>
         </div>
-        <diguipl :post="value.parent" v-if="value.parent"></diguipl>
+        <diguipl :post="value.parent" v-if="value.parent" @digui="huifu"></diguipl>
         <div class="text">{{value.content}}</div>
       </div>
     </div>
     <!-- 占位符 -->
     <div class="ZWF"></div>
     <!-- 底部 -->
-    <pinglunlan :post="user" :obj="obj"></pinglunlan>
+    <pinglunlan :post="user" :obj="obj" @quxiaol="obj = null"></pinglunlan>
   </div>
 </template>
 
@@ -68,7 +68,7 @@ export default {
     huifu(value) {
       console.log(value);
       this.obj = value;
-    }
+    },
   }
 };
 </script>

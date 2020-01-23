@@ -1,12 +1,12 @@
 <template>
   <div class="diguipinglun">
-      <dg :post="post.parent" v-if="post.parent"></dg>
+    <dg :post="post.parent" v-if="post.parent" @digui="diguihuifu"></dg>
     <div class="name">
       <div class="zuo">
         <span>{{post.user.nickname}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <span>{{post.create_date.substring(0,10)}}</span>
       </div>
-      <span>回复</span>
+      <span @click="diguihuifu(post)">回复</span>
     </div>
     <div class="neirong">{{post.content}}</div>
   </div>
@@ -14,13 +14,17 @@
 
 <script>
 export default {
-props:['post'],
-name: 'dg',
-data(){
-        return{
-
-        }
+  props: ["post"],
+  name: "dg",
+  data() {
+    return {};
+  },
+  methods: {
+    diguihuifu(post) {
+      console.log(post);
+      this.$emit("digui", post);
     }
+  }
 };
 </script>
 

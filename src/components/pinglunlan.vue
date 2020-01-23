@@ -39,14 +39,18 @@ export default {
   watch: {
     obj() {
       //显示输入框
-      this.isFocus = true;
+      if (this.obj) {
+        this.isFocus = true;
+      }
     }
   },
   methods: {
     //   获取焦点时触发
     handlerFocus() {
       this.isFocus = !this.isFocus;
-      this.$refs.commtext.focus();
+      setTimeout(() => {
+        this.$refs.commtext.focus();
+      }, 10);
     },
     //收藏
     async shoucang() {
@@ -79,6 +83,9 @@ export default {
     quxiao() {
       this.isFocus = false;
       this.$refs.commtext.value = ""; //清除文本框
+      //发送事件给父元素重置
+      this.$emit("quxiaol");
+      console.log(this.isFocus);
     }
   }
 };
