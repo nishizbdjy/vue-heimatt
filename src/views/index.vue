@@ -7,7 +7,7 @@
         <span data-v-a83bd3b0 class="iconfont iconnew"></span>
       </div>
       <!-- 搜索 -->
-      <div class="sousuo">
+      <div class="sousuo" @click="$router.push({name:'Search'})">
         <i data-v-a83bd3b0 class="van-icon van-icon-search"></i>
         <span>搜索新闻</span>
       </div>

@@ -10,6 +10,7 @@ import myFollows from '@/views/myFollows.vue'//我的关注页
 import myStars from '@/views/myStars.vue'//我的收藏页
 import comment from '@/views/comment.vue'//评论页
 import CateManager from '@/views/CateManager.vue'//栏目页
+import Search from '@/views/Search.vue'//搜索页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -80,6 +81,12 @@ let router = new vueRouter({
             name: 'CateManager',
             path: '/CateManager',
             component: CateManager
+        },
+        //搜索页
+        {
+            name: 'Search',
+            path: '/Search',
+            component: Search
         }
     ]
 })
