@@ -67,7 +67,7 @@ export default {
     document.querySelector(".van-sticky").onclick = e => {
       if (e.target.className === "van-sticky") {
         //跳转到栏目管理页
-        // this.$router.push({ name: "lanmuguanli" });
+        this.$router.push({ name: "CateManager" });
       }
       return false;
     };

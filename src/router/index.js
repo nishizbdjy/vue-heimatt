@@ -9,6 +9,7 @@ import register from '@/views/register.vue'//文章详情页
 import myFollows from '@/views/myFollows.vue'//我的关注页
 import myStars from '@/views/myStars.vue'//我的收藏页
 import comment from '@/views/comment.vue'//评论页
+import CateManager from '@/views/CateManager.vue'//栏目页
 //挂载
 Vue.use(vueRouter)
 //配置路由
@@ -73,6 +74,12 @@ let router = new vueRouter({
             name: 'comment',
             path: `/comment/:id`,
             component: comment
+        },
+        //栏目页
+        {
+            name: 'CateManager',
+            path: '/CateManager',
+            component: CateManager
         }
     ]
 })

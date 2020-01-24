@@ -58,3 +58,9 @@ export const fabiaopl = (id,data)=>{
         data
     })
 }
+//获取栏目
+export const huoqulanmu =()=>{
+    return axios({
+        url : '/category'
+    })
+} 
