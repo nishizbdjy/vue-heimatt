@@ -7,7 +7,12 @@
     </div>
     <div class="historyList">
       <h2>历史记录</h2>
-      <a href="javascript:;"></a>
+      <a
+        href="javascript:;"
+        v-for="(value,index) in lishi"
+        :key="index"
+        @click="ssls(value)"
+      >{{value}}</a>
     </div>
     <!-- <keep-alive> -->
     <div class="historyList">
@@ -32,19 +37,36 @@ export default {
   data() {
     return {
       guanjianzi: "", //关键字
-      post: ""
+      post: "", //列表内容
+      lishi: [] //历史记录
     };
   },
   components: {
     hmxinwenliebiao
   },
-  mounted() {},
+  mounted() {
+    this.lishi = this.init();
+  },
   methods: {
     //获取搜索文章
-    async sousuo(key) {
+    sousuo(key) {
+      this.fzsousuo(key);
+    },
+    //封装搜索
+    async fzsousuo(key) {
       if (key.length !== 0) {
         let res = await search({ keyword: key });
-        console.log(res);
+        let arr = this.init();
+        //找到有的索引
+        let index = arr.indexOf(key);
+        if (index !== -1) {
+          //删除之前的
+          arr.splice(index, 1);
+        }
+        //从前面添加
+        arr.unshift(key);
+        //存储的本地
+        localStorage.setItem("sslishi", JSON.stringify(arr));
         if (res.data.data.length !== 0) {
           this.post = res.data.data;
         } else {
@@ -53,6 +75,15 @@ export default {
       } else {
         this.$toast.fail("搜索内容不能为空");
       }
+    },
+    //获取搜索历史
+    init() {
+      return JSON.parse(localStorage.getItem("sslishi") || "[]");
+    },
+    //搜索历史
+    ssls(value) {
+        //调用封装的搜索
+        this.fzsousuo(value)
     }
   }
 };
