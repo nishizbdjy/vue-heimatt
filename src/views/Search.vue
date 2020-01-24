@@ -2,8 +2,8 @@
   <div class="search">
     <div class="header">
       <span class="iconfont iconjiantou2" @click="$router.back()"></span>
-      <van-search placeholder="请输入搜索关键词" shape="round"></van-search>
-      <div>搜索</div>
+      <van-search placeholder="请输入搜索关键词" v-model="guanjianzi" shape="round"></van-search>
+      <div @click="sousuo(guanjianzi)">搜索</div>
     </div>
     <div class="historyList">
       <h2>历史记录</h2>
@@ -12,19 +12,49 @@
     <!-- <keep-alive> -->
     <div class="historyList">
       <h2>搜索结果</h2>
-      <router-link to=""></router-link>
+      <hmxinwenliebiao
+        v-for="value in post"
+        :key="value.id"
+        :post="value"
+        @click="$router.push({path:`/articleDetail/${value.id}`})"
+      ></hmxinwenliebiao>
     </div>
     <!-- </keep-alive> -->
   </div>
 </template>
 
 <script>
+//搜索
+import { search } from "@/apis/wenzhang.js";
+//文章列表
+import hmxinwenliebiao from "@/components/hmxinwenliebiao.vue";
 export default {
   data() {
-    return {};
+    return {
+      guanjianzi: "", //关键字
+      post: ""
+    };
+  },
+  components: {
+    hmxinwenliebiao
   },
   mounted() {},
-  methods: {}
+  methods: {
+    //获取搜索文章
+    async sousuo(key) {
+      if (key.length !== 0) {
+        let res = await search({ keyword: key });
+        console.log(res);
+        if (res.data.data.length !== 0) {
+          this.post = res.data.data;
+        } else {
+          this.$toast.fail("暂无文章");
+        }
+      } else {
+        this.$toast.fail("搜索内容不能为空");
+      }
+    }
+  }
 };
 </script>
 
