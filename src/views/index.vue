@@ -77,7 +77,17 @@ export default {
     }
     let res = await lanmu();
     // console.log(res);
-    this.cateList = res.data.data;
+    //用户添加栏目的逻辑
+    let yhlanmu = localStorage.getItem("lanmu");
+    //判断用户是否登陆
+    let token = localStorage.getItem("token");
+    this.cateList = yhlanmu ? JSON.parse(yhlanmu) : res.data.data;
+    //有栏目并且有登陆添加 关注，头条
+    yhlanmu
+      ? token
+        ? this.cateList.unshift(...[res.data.data[0]], ...[res.data.data[1]])
+        : this.cateList.unshift(...[res.data.data[0]])
+      : false;
     //改造数据
     this.cateList = this.cateList.map(value => {
       return {
