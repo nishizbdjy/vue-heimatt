@@ -24,6 +24,8 @@
     <van-tabs v-model="active" sticky>
       <!-- 循环栏目 -->
       <van-tab :title="value.name" v-for="value in cateList" :key="value.id">
+        <!-- 栏目入口 -->
+        <span class="lanmu"></span>
         <van-list
           v-model="value.loading"
           :finished="value.finished"
@@ -61,6 +63,14 @@ export default {
     xinwenliebiao
   },
   async mounted() {
+    //栏目伪元素入口
+    document.querySelector(".van-sticky").onclick = e => {
+      if (e.target.className === "van-sticky") {
+        //跳转到栏目管理页
+        // this.$router.push({ name: "lanmuguanli" });
+      }
+      return false;
+    };
     if (localStorage.getItem("user")) {
       let id = localStorage.getItem("user");
       this.id = JSON.parse(id).id;
@@ -152,6 +162,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/deep/.van-sticky {
+  &::before {
+    //  pointer-events:none;
+    // display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    content: "+";
+    font-size: 40px;
+    z-index: 20;
+    background-color: #fff;
+  }
+}
 .tou {
   color: #fff;
   width: 100vw;
